@@ -18,21 +18,6 @@ public class UsuarioDto {
     private int score;
     private boolean active;
     private String country;
-    private TeamDto teamDto;
+    private TeamDto team;
     private List<LogDto> logsDto;
 }
-
-//{
-//        "id": "uuid",
-//        "name": "string",
-//        "age": "int",
-//        "score": "int",
-//        "active": "bool",
-//        "country": "string",
-//        "team": {
-//        "name": "string",
-//        "leader": "bool",
-//        "projects": [{ "name": "string", "completed": "bool" }]
-//        },
-//        "logs": [{ "date": "YYYY-MM-DD", "action": "login/logout" }]
-//        }
