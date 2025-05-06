@@ -103,7 +103,7 @@ public class UsuarioService {
                 connection.connect();
                 int status = connection.getResponseCode();
                 InputStream in = connection.getInputStream();
-                Object json = mapper.readTree(in); // Valida JSON
+                Object json = mapper.readTree(in);
 
                 long duration = System.currentTimeMillis() - start;
                 return new EvaluationDto(url, status, duration, true);
