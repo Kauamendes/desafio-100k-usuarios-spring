@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+import static br.com.kauamendes.desafio_100k_usuarios.utils.ResponseUtils.withExecutionTime;
+
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor
@@ -18,50 +20,34 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseDto<String> processarUsuarios(@RequestBody List<UsuarioDto> usuarios) {
-        long inicio = System.currentTimeMillis();
-        int quantidadeUsuarios = usuarioService.processarUsuarios(usuarios);
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(quantidadeUsuarios+" Usuários processados com sucesso", fim, inicio - fim);
+        return withExecutionTime(() -> {
+            int quantidade = usuarioService.processarUsuarios(usuarios);
+            return quantidade + " Usuários processados com sucesso";
+        });
     }
 
     @GetMapping("/superusers")
     public ResponseDto<List<UsuarioDto>> buscarSuperUsers() {
-        long inicio = System.currentTimeMillis();
-        List<UsuarioDto> usuarios = usuarioService.buscarSuperUsuarios();
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(usuarios, fim, inicio - fim);
+        return withExecutionTime(usuarioService::buscarSuperUsuarios);
     }
 
     @GetMapping("/top-countries")
     public ResponseDto<List<String>> buscarTopPaises() {
-        long inicio = System.currentTimeMillis();
-        List<String> paises = usuarioService.buscarTopPaises();
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(paises, fim, inicio - fim);
+        return withExecutionTime(usuarioService::buscarTopPaises);
     }
 
     @GetMapping("/team-insights")
     public ResponseDto<List<TeamInsightDto>> buscarInsightsDeTime() {
-        long inicio = System.currentTimeMillis();
-        List<TeamInsightDto> insights = usuarioService.gerarTeamInsights();
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(insights, fim, inicio - fim);
+        return withExecutionTime(usuarioService::gerarTeamInsights);
     }
 
     @GetMapping("/active-users-per-day")
     public ResponseDto<Map<LogDto, Long>> buscarLoginsPorDia(@RequestParam(required = false) Integer min) {
-        long inicio = System.currentTimeMillis();
-        Map<LogDto, Long> logins = usuarioService.buscarLoginsPorDia(min);
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(logins, fim, inicio - fim);
+        return withExecutionTime(() -> usuarioService.buscarLoginsPorDia(min));
     }
 
     @GetMapping("/evaluation")
     public ResponseDto<List<EvaluationDto>> avaliarEndpoints() {
-        long inicio = System.currentTimeMillis();
-        List<EvaluationDto> resultados = usuarioService.avaliarEndpoints();
-        long fim = System.currentTimeMillis();
-        return new ResponseDto<>(resultados, fim, inicio - fim);
+        return withExecutionTime(usuarioService::avaliarEndpoints);
     }
-
 }
